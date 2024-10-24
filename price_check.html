@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parman Hotel - Price Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #f36f25;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .result {
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+        .result.error {
+            color: red;
+        }
+        footer {
+            background-color: #f36f25;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <h1 style="color: white;">Parman Hotel</h1>
+        </div>
+        <div class="menu">
+            <a href="home.html">Home</a>
+            <a href="price_check.html">Price Check</a>
+            <a href="logout.html">Logout</a>
+        </div>
+    </div>
+
+    <!-- Price Check Form -->
+    <div class="container">
+        <h2>Input to Check The Price</h2>
+        <form id="priceForm">
+            <label for="floor">Floor</label>
+            <input type="number" id="floor" name="floor" value="1" min="1">
+
+            <label for="type">Type</label>
+            <select id="type" name="type">
+                <option value="standard">Standard</option>
+                <option value="superior">Superior</option>
+                <option value="deluxe">Deluxe</option>
+            </select>
+
+            <label for="days">Day(s)</label>
+            <input type="number" id="days" name="days" value="1" min="1">
+
+            <label for="discount">Discount</label>
+            <select id="discount" name="discount">
+                <option value="none">None</option>
+                <option value="member">Member</option>
+                <option value="birthday">Birthday Promo</option>
+            </select>
+
+            <button type="button" onclick="calculatePrice()">CHECK</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Website Footer
+    </footer>
+
+    <script>
+        function calculatePrice() {
+            // Get form values
+            const floor = document.getElementById('floor').value;
+            const type = document.getElementById('type').value;
+            const days = document.getElementById('days').value;
+            const discount = document.getElementById('discount').value;
+
+            // Room prices
+            const roomPrices = {
+                'standard': 5000,
+                'superior': 6000,
+                'deluxe': 7000
+            };
+
+            // Calculate the total price based on room type and number of days
+            let totalPrice = roomPrices[type] * days;
+
+            // Add extra fee for floors above 5
+            if (floor > 5) {
+                totalPrice += 1000;
+            }
+
+            // Apply discount
+            let discountAmount = 0;
+            if (discount === 'member') {
+                discountAmount = totalPrice * 0.10;
+            } else if (discount === 'birthday') {
+                discountAmount = 500;
+            }
+
+            // Final price after discount
+            const finalPrice = totalPrice - discountAmount;
+
+            // Display the result
+            document.getElementById('result').innerHTML = `
+                Total price is ${totalPrice} <br>
+                Total discount is ${discountAmount} <br>
+                <span style="color: red;">Total payment is ${finalPrice}</span>
+            `;
+        }
+    </script>
+
+</body>
+</html>
